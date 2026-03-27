@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,6 +12,7 @@ body {
   font-family: 'Poppins', sans-serif;
   background: linear-gradient(135deg, #1a012b, #3d0075);
   color: white;
+  overflow-x: hidden;
 }
 
 /* LOGIN */
@@ -22,10 +24,218 @@ body {
 }
 
 .login-card {
-  background: rgba(255,255,255,0.1);
-  backdrop-filter: blur(15px);
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(20px);
   padding: 30px;
-  border-radius: 20px;
+  border-radius: 25px;
   width: 90%;
   max-width: 350px;
-  text-align: center
+  text-align: center;
+  box-shadow: 0 0 30px rgba(155, 89, 255, 0.4);
+}
+
+.login-card h2 {
+  margin-bottom: 20px;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 12px;
+  border: none;
+  outline: none;
+}
+
+.btn {
+  background: linear-gradient(135deg, #9b59ff, #6a0dad);
+  border: none;
+  padding: 12px;
+  width: 100%;
+  border-radius: 15px;
+  color: white;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+/* APP */
+#app {
+  display: none;
+}
+
+/* HEADER */
+.header {
+  padding: 25px;
+}
+
+.balance-card {
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(20px);
+  padding: 20px;
+  border-radius: 25px;
+  box-shadow: 0 0 20px rgba(155, 89, 255, 0.4);
+}
+
+.balance {
+  font-size: 30px;
+  font-weight: bold;
+}
+
+/* ACTIONS */
+.actions {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px;
+}
+
+.action-btn {
+  background: rgba(255,255,255,0.1);
+  padding: 15px;
+  border-radius: 20px;
+  text-align: center;
+  width: 70px;
+}
+
+/* CHAT */
+.chat-card {
+  margin: 20px;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(15px);
+  padding: 15px;
+  border-radius: 20px;
+}
+
+.chat-box {
+  height: 250px;
+  overflow-y: auto;
+}
+
+.message {
+  padding: 10px;
+  margin: 5px;
+  border-radius: 15px;
+  max-width: 70%;
+}
+
+.me {
+  background: linear-gradient(135deg, #9b59ff, #6a0dad);
+  margin-left: auto;
+}
+
+.other {
+  background: rgba(255,255,255,0.2);
+}
+
+.input-area {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* NAV */
+.nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(15px);
+  display: flex;
+  justify-content: space-around;
+  padding: 10px;
+}
+
+.nav span {
+  font-size: 20px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div id="login">
+  <div class="login-card">
+    <h2>💜 Kim App</h2>
+    <input placeholder="Correo">
+    <input type="password" placeholder="Contraseña">
+    <button class="btn" onclick="entrar()">Entrar</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+
+  <div class="header">
+    <h2>Hola 👋</h2>
+    <div class="balance-card">
+      <div>Saldo disponible</div>
+      <div class="balance">25 Kim</div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <div class="action-btn">💸<br>Enviar</div>
+    <div class="action-btn">📥<br>Recargar</div>
+    <div class="action-btn">📈<br>Bonos</div>
+    <div class="action-btn">🎁<br>Promo</div>
+  </div>
+
+  <div class="chat-card">
+    <h3>💬 Comunidad</h3>
+    <div class="chat-box" id="chat"></div>
+
+    <div class="input-area">
+      <input id="msg" placeholder="Escribe...">
+      <button class="btn" onclick="enviar()">➤</button>
+    </div>
+  </div>
+
+</div>
+
+<div class="nav">
+  <span>🏠</span>
+  <span>💰</span>
+  <span>💬</span>
+  <span>👤</span>
+</div>
+
+<script>
+// LOGIN
+function entrar(){
+  document.getElementById("login").style.display = "none";
+  document.getElementById("app").style.display = "block";
+}
+
+// CHAT
+let mensajes = [
+  {text:"Bienvenido a Kim App 💜", me:false}
+];
+
+function enviar(){
+  let text = document.getElementById("msg").value;
+  if(text.trim() === "") return;
+
+  mensajes.push({text, me:true});
+  render();
+  document.getElementById("msg").value = "";
+}
+
+function render(){
+  let chat = document.getElementById("chat");
+  chat.innerHTML = "";
+
+  mensajes.forEach(m=>{
+    let div = document.createElement("div");
+    div.className = "message " + (m.me ? "me":"other");
+    div.innerText = m.text;
+    chat.appendChild(div);
+  });
+
+  chat.scrollTop = chat.scrollHeight;
+}
+
+render();
+</script>
+
+</body>
+</html>
